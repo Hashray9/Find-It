@@ -690,78 +690,46 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
   return lower_image_filtered;
 }
 
-const tshirts = async () => {
-  console.log("tshirts function called"); // Log to confirm function execution
-  fetch(`/api/${shopName}/tshirts_images`) 
-      .then((response) => {
-          console.log("Response status:", response.status); // Log the response status
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-      })
-      .then((fetchedImages) => {
-        upperGot= fetchedImages.tshirts_images;
-        console.log("Fetched jeans Images:", fetchedImages); // Log the fetched data
-        console.log("tshirt Got:", upperGot); // Log the value of lowerGot
-      })
-      .catch((error) => {
-          console.error('Error fetching images:', error); // Handle any errors
-      });
-};
-
-tshirts();
-
-
-const jeans = async () => {
+async function fetchImages(type) {
   try {
-    console.log("jeans function called");
-    const fetchUrl = `/api/${shopName}/jeans_images`;
+    console.log(`${type} function called`);
+    const fetchUrl = `/api/${shopName}/${type}_images`;
     console.log("Fetching from URL:", fetchUrl);
 
-    fetch(fetchUrl) 
-        .then((response) => {
-            console.log("Response status:", response.status);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then((fetchedImages) => {
-          jeansGot = fetchedImages.jeans_images;
-          console.log("Fetched jeans Images:", fetchedImages);
-          console.log("jeans Got:", jeansGot);
-        })
-        .catch((error) => {
-            console.error('Error fetching images:', error);
-        });
-  } catch (error) {
-    console.error('Error in jeans function:', error);
-  }
-};
-
-jeans();
-
-const lower = async () => {
-  console.log("Lower function called"); // Log to confirm function execution
-  fetch(`/api/${shopName}/lower_images`) 
-      .then((response) => {
-          console.log("Response status:", response.status); // Log the response status
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-      })
-      .then((fetchedImages) => {
+    const response = await fetch(fetchUrl);
+    console.log("Response status:", response.status);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const fetchedImages = await response.json();
+    switch (type) {
+      case 'tshirts':
+        upperGot = fetchedImages.tshirts_images;
+        console.log("Fetched tshirts Images:", fetchedImages);
+        console.log("Tshirts Got:", upperGot);
+        break;
+      case 'jeans':
+        jeansGot = fetchedImages.jeans_images;
+        console.log("Fetched jeans Images:", fetchedImages);
+        console.log("Jeans Got:", jeansGot);
+        break;
+      case 'lower':
         lowerGot = fetchedImages.lower_images;
-        console.log("Fetched Lower Images:", fetchedImages); // Log the fetched data
-        console.log("Lower Got:", lowerGot); // Log the value of lowerGot
-      })
-      .catch((error) => {
-          console.error('Error fetching images:', error); // Handle any errors
-      });
-};
-lower();
+        console.log("Fetched Lower Images:", fetchedImages);
+        console.log("Lower Got:", lowerGot);
+        break;
+      default:
+        console.error("Unknown type:", type);
+    }
+  } catch (error) {
+    console.error(`Error in ${type} function:`, error);
+  }
+}
+
+// Call the fetchImages function for each type
+fetchImages('tshirts');
+fetchImages('jeans');
+fetchImages('lower');
 
 // Toggle filter options visibility
 document.getElementById('filter-btn').addEventListener('click', function() {
