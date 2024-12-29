@@ -34,10 +34,10 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       if (!shop) {
         return res.status(404).json({ error: 'Shop not found' });
       }
-      console.timeEnd("dbQuery");
+      
       // Find images associated with the shop
       const tshirts_images = await Image.find({ shopId: shop._id ,category:"tshirts"}).limit(10);
-      console.timeEnd("dbQuery");
+      
       res.json({tshirts_images});
     } catch (err) {
       console.error(err);
