@@ -690,7 +690,7 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
   return lower_image_filtered;
 }
 
-const tshirts = () => {
+const tshirts = async () => {
   console.log("tshirts function called"); // Log to confirm function execution
   fetch(`/api/${shopName}/tshirts_images`) 
       .then((response) => {
@@ -713,7 +713,7 @@ const tshirts = () => {
 tshirts();
 
 
-const jeans = () => {
+const jeans = async () => {
   try {
     console.log("jeans function called");
     const fetchUrl = `/api/${shopName}/jeans_images`;
@@ -742,7 +742,7 @@ const jeans = () => {
 
 jeans();
 
-const lower = () => {
+const lower = async () => {
   console.log("Lower function called"); // Log to confirm function execution
   fetch(`/api/${shopName}/lower_images`) 
       .then((response) => {
