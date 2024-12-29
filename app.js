@@ -78,12 +78,10 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
         return res.status(404).json({ error: 'Shop not found' });
       }
   
-      // Explain the query execution to analyze index usage
-      const explainResult = await Image.find({ shopId: shop._id, category: "lowers" }).explain('executionStats');
-      console.log(explainResult);  // Log the explain result to see the execution details
   
       // Fetch the lower images (same query, without explain)
-      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" });
+      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).explain('executionStats');
+      console.log(explainResult);
   
       res.json({ lower_images });
     } catch (err) {
