@@ -691,12 +691,19 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 const tshirts = () => {
+  console.log("tshirts function called"); // Log to confirm function execution
   fetch(`/api/${shopName}/tshirts_images`) 
       .then((response) => {
+          console.log("Response status:", response.status); // Log the response status
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
           return response.json();
       })
       .then((fetchedImages) => {
-        upperGot=fetchedImages.tshirts_images;
+        upperGot= fetchedImages.tshirts_images;
+        console.log("Fetched jeans Images:", fetchedImages); // Log the fetched data
+        console.log("tshirt Got:", upperGot); // Log the value of lowerGot
       })
       .catch((error) => {
           console.error('Error fetching images:', error); // Handle any errors
@@ -707,12 +714,19 @@ tshirts();
 
 
 const jeans = () => {
+  console.log("jeans function called"); // Log to confirm function execution
   fetch(`/api/${shopName}/jeans_images`) 
       .then((response) => {
+          console.log("Response status:", response.status); // Log the response status
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
           return response.json();
       })
       .then((fetchedImages) => {
-        jeansGot=fetchedImages.jeans_images;
+        jeansGot = fetchedImages.jeans_images;
+        console.log("Fetched jeans Images:", fetchedImages); // Log the fetched data
+        console.log("jeans Got:", jeansGot); // Log the value of lowerGot
       })
       .catch((error) => {
           console.error('Error fetching images:', error); // Handle any errors
