@@ -385,17 +385,12 @@ searchBtnlower.addEventListener("click", () => {
 
 async function getCustomRGBPalette(r, g, b) {
   try {
-    const response = await fetch("http://colormind.io/api/", {
-      method: "POST",
-      body: JSON.stringify({
-        model: "default",
-        input: [[r, g, b], "N", "N", "N", "N"],
-      }),
-    });
-
+    const response = await fetch(`/colormind/api?r=${r}&g=${g}&b=${b}`);
     if (response.ok) {
-      const data = await response.json();
+      const data = await response.json(); // Parse the JSON
       const palette = data.result;
+      console.log("Palette array:", palette);
+
       c1 = `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`;
       c2 = `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`;
       c3 = `rgb(${palette[3][0]}, ${palette[3][1]}, ${palette[3][2]})`;
@@ -404,10 +399,12 @@ async function getCustomRGBPalette(r, g, b) {
       color2.style.backgroundColor = c2;
       color3.style.backgroundColor = c3;
       color4.style.backgroundColor = c4;
-    } else {
+    }
+     else {
       console.error("Error fetching color palette:", response.statusText);
     }
-  } catch (error) {
+  }
+   catch (error) {
     console.error("Request failed:", error);
   }
 }
@@ -725,18 +722,24 @@ const jeans = () => {
 jeans();
 
 const lower = () => {
+  console.log("Lower function called"); // Log to confirm function execution
   fetch(`/api/${shopName}/lower_images`) 
       .then((response) => {
+          console.log("Response status:", response.status); // Log the response status
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
           return response.json();
       })
       .then((fetchedImages) => {
-        lowerGot=fetchedImages.lower_images;
+        lowerGot = fetchedImages.lower_images;
+        console.log("Fetched Lower Images:", fetchedImages); // Log the fetched data
+        console.log("Lower Got:", lowerGot); // Log the value of lowerGot
       })
       .catch((error) => {
           console.error('Error fetching images:', error); // Handle any errors
       });
 };
-
 lower();
 
 // Toggle filter options visibility

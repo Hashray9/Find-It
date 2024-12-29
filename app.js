@@ -6,7 +6,8 @@ const Image=require("./models/images")
 
 require('dotenv').config();
 const PORT = process.env.PORT || 1000;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/imageDB');
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/imageDB');
+mongoose.connect('mongodb://127.0.0.1:27017/imageDB');
 
 const app=express();
  
@@ -155,6 +156,39 @@ app.get('/api/add-prices', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while updating prices.' });
   }
 });
+
+app.get('/colormind/api', async (req, res) => {
+  try {
+    const { r, g, b } = req.query; // Extract variables from query parameters
+
+    // Validate RGB values
+    const rgbValues = [r, g, b].map((value) => parseInt(value, 10));
+    if (rgbValues.some((value) => isNaN(value) || value < 0 || value > 255)) {
+      return res.status(400).json({ error: "Invalid RGB values. Must be integers between 0 and 255." });
+    }
+
+    // Call the external Colormind API
+    const response = await fetch('http://colormind.io/api/', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "default",
+        input: [rgbValues, "N", "N", "N", "N"], // Use the parsed integers
+      }),
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).send("Error communicating with Colormind API.");
+    }
+
+    const data = await response.json(); // Parse the JSON response
+    res.json(data); // Send the parsed JSON to the frontend
+  } catch (error) {
+    console.error("Error in /colormind/api:", error);
+    res.status(500).send("Error fetching data");
+  }
+});
+
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
