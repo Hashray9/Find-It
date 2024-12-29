@@ -36,7 +36,7 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       }
       console.timeEnd("dbQuery");
       // Find images associated with the shop
-      const tshirts_images = await Image.find({ shopId: shop._id ,category:"tshirts"});
+      const tshirts_images = await Image.find({ shopId: shop._id ,category:"tshirts"}).limit(10);
       console.timeEnd("dbQuery");
       res.json({tshirts_images});
     } catch (err) {
@@ -58,7 +58,7 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       }
   
       // Find images associated with the shop
-      const jeans_images = await Image.find({ shopId: shop._id ,category:"jeans"});
+      const jeans_images = await Image.find({ shopId: shop._id ,category:"jeans"}).limit(10);
   
       res.json({jeans_images});
     } catch (err) {
@@ -79,7 +79,7 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       }
   
       // Find images associated with the shop
-      const lower_images = await Image.find({ shopId: shop._id ,category:"lowers"});
+      const lower_images = await Image.find({ shopId: shop._id ,category:"lowers"}).limit(10);
   
       res.json({lower_images});
     } catch (err) {
