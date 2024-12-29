@@ -714,23 +714,30 @@ tshirts();
 
 
 const jeans = () => {
-  console.log("jeans function called"); // Log to confirm function execution
-  fetch(`/api/${shopName}/jeans_images`) 
-      .then((response) => {
-          console.log("Response status:", response.status); // Log the response status
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-      })
-      .then((fetchedImages) => {
-        jeansGot = fetchedImages.jeans_images;
-        console.log("Fetched jeans Images:", fetchedImages); // Log the fetched data
-        console.log("jeans Got:", jeansGot); // Log the value of lowerGot
-      })
-      .catch((error) => {
-          console.error('Error fetching images:', error); // Handle any errors
-      });
+  try {
+    console.log("jeans function called");
+    const fetchUrl = `/api/${shopName}/jeans_images`;
+    console.log("Fetching from URL:", fetchUrl);
+
+    fetch(fetchUrl) 
+        .then((response) => {
+            console.log("Response status:", response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((fetchedImages) => {
+          jeansGot = fetchedImages.jeans_images;
+          console.log("Fetched jeans Images:", fetchedImages);
+          console.log("jeans Got:", jeansGot);
+        })
+        .catch((error) => {
+            console.error('Error fetching images:', error);
+        });
+  } catch (error) {
+    console.error('Error in jeans function:', error);
+  }
 };
 
 jeans();
