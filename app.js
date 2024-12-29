@@ -79,7 +79,8 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       }
   
       // Find images associated with the shop
-      const lower_images = await Image.find({ shopId: shop._id ,category:"lowers"}).limit(10);
+      const lower_images = await Image.find({ shopId: shop._id ,category:"lowers"}).explain('executionStats');
+      console.log(result);
   
       res.json({lower_images});
     } catch (err) {
