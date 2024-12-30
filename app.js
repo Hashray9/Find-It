@@ -80,7 +80,7 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
   
   
       // Fetch the lower images (same query, without explain)
-      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).limit(10).explain("executionStats");
+      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).limit(10).hint("shopId_1_category_1").explain("executionStats");
       console.log(lower_images)
   
       res.json({ lower_images });
