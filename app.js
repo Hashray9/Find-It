@@ -36,7 +36,7 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       }
       
       // Find images associated with the shop
-      const tshirts_images = await Image.find({ shopId: shop._id ,category:"tshirts"}).limit(10);
+      const tshirts_images = await Image.find({ shopId: shop._id ,category:"tshirts"}).limit(10).hint("shopId_1_category_1").exec();
       
       res.json({tshirts_images});
     } catch (err) {
@@ -58,7 +58,7 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
       }
   
       // Find images associated with the shop
-      const jeans_images = await Image.find({ shopId: shop._id ,category:"jeans"}).limit(10);
+      const jeans_images = await Image.find({ shopId: shop._id ,category:"jeans"}).limit(10).hint("shopId_1_category_1").exec();
   
       res.json({jeans_images});
     } catch (err) {
@@ -80,12 +80,8 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
   
   
       // Fetch the lower images (same query, without explain)
-      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).limit(10).hint("shopId_1_category_1").explain("executionStats").exec();
+      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).limit(10).hint("shopId_1_category_1").exec();
       
-      
-
-  console.log("Explain Result:", JSON.stringify(lower_images, null, 2));
-
       res.json({ lower_images });
     } catch (err) {
       console.error(err);
