@@ -80,9 +80,15 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
   
   
       // Fetch the lower images (same query, without explain)
-      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).limit(10).hint("shopId_1_category_1").explain("executionStats");
-      console.log(lower_images)
-  
+      const lower_images = await Image.find({ shopId: shop._id, category: "lowers" }).limit(10).hint("shopId_1_category_1").exec();
+      
+      const explainResult = await Image.find({ shopId: shop._id, category: "lowers" })
+  .limit(10)
+  .hint("shopId_1_category_1")
+  .explain("executionStats");
+
+  console.log("Explain Result:", JSON.stringify(explainResult, null, 2));
+
       res.json({ lower_images });
     } catch (err) {
       console.error(err);
