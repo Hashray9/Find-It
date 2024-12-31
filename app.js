@@ -13,10 +13,7 @@ const app=express();
  
 app.set("view engine","ejs");
 app.use(express.static(path.join(__dirname,"public")));
-app.use((req, res, next) => {
-  console.log(`Incoming request: ${req.method} ${req.url}`);
-  next();
-});
+
 
 app.get("/:shopname",(req,res)=>{
     const shopName=req.params.shopname;
@@ -194,6 +191,8 @@ app.get('/colormind/api', async (req, res) => {
   }
 });
 
-
+app.get("/admin", (req,res)=>{
+  res.send("hii")
+})
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
