@@ -191,8 +191,8 @@ app.get('/colormind/api', async (req, res) => {
   }
 });
 
-app.get("/admin", (req,res)=>{
-  res.send("hii")
+app.get('/admin', (req,res)=>{
+  res.render('admin')
 })
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
