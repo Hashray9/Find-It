@@ -325,6 +325,7 @@ function handleFileSelect(e) {
 }
 
 searchBtnJeans.addEventListener("click", () => {
+  fetchImages('jeans');//fetches all product from database
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -345,6 +346,7 @@ searchBtnJeans.addEventListener("click", () => {
 });
 
 searchBtnUpper.addEventListener("click", () => {
+  fetchImages('tshirts');//fetches all product from database
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -365,6 +367,7 @@ searchBtnUpper.addEventListener("click", () => {
 });
 
 searchBtnlower.addEventListener("click", () => {
+  fetchImages('lower');//fetches all product from database
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -730,9 +733,6 @@ async function fetchImages(type) {
   }
 }
 
-fetchImages('jeans');//fetches all product from database
-fetchImages('lower');//fetches all product from database
-fetchImages('tshirts');//fetches all product from database
 
 // Toggle filter options visibility
 document.getElementById('filter-btn').addEventListener('click', function() {
