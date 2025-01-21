@@ -324,6 +324,7 @@ function handleFileSelect(e) {
 }
 
 searchBtnJeans.addEventListener("click", () => {
+  fetchImages('jeans');//fetches all product from database
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -344,6 +345,7 @@ searchBtnJeans.addEventListener("click", () => {
 });
 
 searchBtnUpper.addEventListener("click", () => {
+  fetchImages('tshirts');//fetches all product from database
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -364,6 +366,7 @@ searchBtnUpper.addEventListener("click", () => {
 });
 
 searchBtnlower.addEventListener("click", () => {
+  fetchImages('lower');//fetches all product from database
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -691,6 +694,7 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 async function fetchImages(type) {
+  spinner.classList.remove('hidden'); // Show spinner
   try {
     console.log(`${type} function called`);
     const fetchUrl = `/api/${shopName}/${type}_images`;
@@ -723,13 +727,11 @@ async function fetchImages(type) {
     }
   } catch (error) {
     console.error(`Error in ${type} function:`, error);
+  } finally {
+    spinner.classList.add('hidden'); // Hide spinner
   }
 }
 
-// Call the fetchImages function for each type
-fetchImages('tshirts');
-fetchImages('jeans');
-fetchImages('lower');
 
 // Toggle filter options visibility
 document.getElementById('filter-btn').addEventListener('click', function() {
