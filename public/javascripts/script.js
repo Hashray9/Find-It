@@ -12,7 +12,7 @@ const color2 = document.getElementById("color2");
 const color3 = document.getElementById("color3");
 const color4 = document.getElementById("color4");
 const dropZone = document.getElementById("drop-zone");
-const spinner = document.getElementById('loadingSpinner');
+const loadingOverlay = document.getElementById('loadingOverlay');
 let jeansGot;
 let upperGot;
 let lowerGot;
@@ -692,7 +692,7 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 async function fetchImages(type) {
-  spinner.classList.remove('hidden'); // Show spinner
+  loadingOverlay.classList.remove('hidden');
   try {
     console.log(`${type} function called`);
     const fetchUrl = `/api/${shopName}/${type}_images`;
@@ -726,7 +726,7 @@ async function fetchImages(type) {
   } catch (error) {
     console.error(`Error in ${type} function:`, error);
   } finally {
-    spinner.classList.add('hidden'); // Hide spinner
+    loadingOverlay.classList.add('hidden');
   }
 }
 
