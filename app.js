@@ -7,7 +7,7 @@ const Image=require("./models/images")
 require('dotenv').config();
 const PORT = process.env.PORT || 1000;
 // const PORT = 1000;
-mongoose.connect(`process.env.MONGODB_URI`);
+mongoose.connect(process.env.MONGODB_URI);
 // mongoose.connect('mongodb://127.0.0.1:27017/imageDB');
 
 const app=express();
