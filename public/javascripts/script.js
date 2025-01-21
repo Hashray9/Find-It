@@ -325,6 +325,7 @@ function handleFileSelect(e) {
 }
 
 searchBtnJeans.addEventListener("click", () => {
+  loadingOverlay.classList.remove('hidden');
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -345,6 +346,7 @@ searchBtnJeans.addEventListener("click", () => {
 });
 
 searchBtnUpper.addEventListener("click", () => {
+  loadingOverlay.classList.remove('hidden');
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -365,6 +367,7 @@ searchBtnUpper.addEventListener("click", () => {
 });
 
 searchBtnlower.addEventListener("click", () => {
+  loadingOverlay.classList.remove('hidden');
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -692,7 +695,6 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 async function fetchImages(type) {
-  loadingOverlay.classList.remove('hidden');
   try {
     console.log(`${type} function called`);
     const fetchUrl = `/api/${shopName}/${type}_images`;
