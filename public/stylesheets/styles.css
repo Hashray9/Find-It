@@ -572,6 +572,7 @@ input[type="range"]::-moz-range-thumb {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     z-index: 9999; /* Ensure it appears on top of everything */
@@ -598,4 +599,9 @@ input[type="range"]::-moz-range-thumb {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.animation-text{
+    display: block;
+    color: var(--accent-color);
 }
