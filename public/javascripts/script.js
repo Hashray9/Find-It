@@ -567,8 +567,9 @@ retakeBtn.addEventListener("click", async () => {
       jeans_image_filtered = jeansGot.filter(item => {
         const itemRgb = rgbStringToArray(item.rgb);
         const sizeMatches = item.size === filter_size; // Check if the item's size matches the filter size
-        const priceMatches = item.price >= filter_priceAbove && item.price <= filter_priceBelow; // Check if the item's price is within the specified range
-        return priceMatches && sizeMatches && inputRgbArray.some(inputRgb => colorDistance(inputRgb, itemRgb) <= threshold);
+        const abovePriceMatches = item.price >= filter_priceAbove 
+        const belowPriceMatches = item.price <= filter_priceBelow; // Check if the item's price is within the specified range
+        return abovePriceMatches && belowPriceMatches && sizeMatches && inputRgbArray.some(inputRgb => colorDistance(inputRgb, itemRgb) <= threshold);
     });
     }
     else{
