@@ -704,8 +704,6 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 async function fetchImages(type) {
-  loadingOverlay.classList.remove('hidden');
-
   try {
     console.log(`${type} function called`);
     const fetchUrl = `/api/${shopName}/${type}_images`;
@@ -738,9 +736,7 @@ async function fetchImages(type) {
     }
   } catch (error) {
     console.error(`Error in ${type} function:`, error);
-  } finally {
-    loadingOverlay.classList.add('hidden');
-  }
+  } 
 }
 
 fetchImages('lower');//fetches all product from database
