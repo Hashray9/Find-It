@@ -324,7 +324,14 @@ function handleFileSelect(e) {
   };
 }
 
-searchBtnJeans.addEventListener("click", () => {
+searchBtnJeans.addEventListener("click", async() => {
+  document.getElementById('loadingOverlay').style.display = 'flex'; // Show loading overlay
+  try {
+      await fetchImages('tshirts'); // Fetch images for the upper type
+  } catch (error) {
+      console.error('Error fetching images:', error);
+  } finally {
+      document.getElementById('loadingOverlay').style.display = 'none'; // Hide loading overlay
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -342,6 +349,7 @@ searchBtnJeans.addEventListener("click", () => {
   } else {
     alert("Please upload an image.");
   }
+}
 });
 
 searchBtnUpper.addEventListener("click", async () => {
@@ -352,7 +360,6 @@ searchBtnUpper.addEventListener("click", async () => {
       console.error('Error fetching images:', error);
   } finally {
       document.getElementById('loadingOverlay').style.display = 'none'; // Hide loading overlay
-  
 
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
@@ -374,8 +381,14 @@ searchBtnUpper.addEventListener("click", async () => {
 }
 });
 
-searchBtnlower.addEventListener("click", () => {
-
+searchBtnlower.addEventListener("click", async() => {
+  document.getElementById('loadingOverlay').style.display = 'flex'; // Show loading overlay
+  try {
+      await fetchImages('tshirts'); // Fetch images for the upper type
+  } catch (error) {
+      console.error('Error fetching images:', error);
+  } finally {
+      document.getElementById('loadingOverlay').style.display = 'none'; // Hide loading overlay
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -393,6 +406,7 @@ searchBtnlower.addEventListener("click", () => {
   } else {
     alert("Please upload an image.");
   }
+}
 });
 
 async function getCustomRGBPalette(r, g, b) {
