@@ -344,7 +344,16 @@ searchBtnJeans.addEventListener("click", () => {
   }
 });
 
-searchBtnUpper.addEventListener("click", () => {
+searchBtnUpper.addEventListener("click", async () => {
+  document.getElementById('loadingOverlay').style.display = 'flex'; // Show loading overlay
+  try {
+      await fetchImages('tshirts'); // Fetch images for the upper type
+  } catch (error) {
+      console.error('Error fetching images:', error);
+  } finally {
+      document.getElementById('loadingOverlay').style.display = 'none'; // Hide loading overlay
+  
+
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -362,9 +371,11 @@ searchBtnUpper.addEventListener("click", () => {
   } else {
     alert("Please upload an image.");
   }
+}
 });
 
 searchBtnlower.addEventListener("click", () => {
+
   document.getElementById("message").style.display="none";
   const currentColor = mostFrequentColorDisplay.style.backgroundColor;
   if (currentColor) {
@@ -639,7 +650,6 @@ function findSimilarUppers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 function findSimilarLowers(color1, color2, color3, color4, contrastColor, threshold) {
-  fetchImages('lower');//fetches all product from database
 
   const inputRgbArray = [
     rgbStringToArray(color1),
@@ -733,6 +743,7 @@ async function fetchImages(type) {
   }
 }
 
+fetchImages('lower');//fetches all product from database
 fetchImages('jeans');//fetches all product from database
 fetchImages('tshirts');//fetches all product from database
 
