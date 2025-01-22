@@ -639,6 +639,8 @@ function findSimilarUppers(color1, color2, color3, color4, contrastColor, thresh
 }
 
 function findSimilarLowers(color1, color2, color3, color4, contrastColor, threshold) {
+  fetchImages('lower');//fetches all product from database
+
   const inputRgbArray = [
     rgbStringToArray(color1),
     rgbStringToArray(color2),
@@ -732,7 +734,6 @@ async function fetchImages(type) {
 }
 
 fetchImages('jeans');//fetches all product from database
-fetchImages('lower');//fetches all product from database
 fetchImages('tshirts');//fetches all product from database
 
 // Toggle filter options visibility
