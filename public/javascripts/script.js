@@ -672,7 +672,7 @@ function findSimilarLowers(color1, color2, color3, color4, contrastColor, thresh
     rgbStringToArray(color4),
     rgbStringToArray(contrastColor)
   ];
- console.log(filter_size+"value size")
+
   if(filter_size){
     lower_image_filtered = lowerGot.filter((item) => {
       const itemRgb = rgbStringToArray(item.rgb);
