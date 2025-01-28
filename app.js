@@ -2,7 +2,8 @@ const express=require("express");
 const path=require("path");
 const mongoose=require("mongoose");
 const Shop=require("./models/shop");
-const Image=require("./models/images")
+const Image=require("./models/images");
+const Owner=require("./models/owner")
 
 require('dotenv').config();
 const PORT = process.env.PORT || 1000;
@@ -14,12 +15,108 @@ const app=express();
  
 app.set("view engine","ejs");
 app.use(express.static(path.join(__dirname,"public")));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+app.post('/:shopname/login', async (req, res) => {
+  const shopName=req.params.shopname;
+  const { email, password } = req.body;
+  try {
+    // Find the admin by email
+    const owner = await Owner.findOne({ email });
 
-app.get("/:shopname",(req,res)=>{
-    const shopName=req.params.shopname;
-    res.render("index",{shopName})
-})
+    if (!owner) {
+        return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    if (owner.password === password) {
+      return res.redirect(`/${shopName}/owner`);
+    }else {
+      return res.status(401).send('Invalid password');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.get('/:shopname/admin-login', (req, res) => {
+  const shopName=req.params.shopname;
+  res.render('admin-login',{shopName});
+});
+
+app.get("/:shopname", async (req, res) => {
+  const shopName = req.params.shopname;
+  let shop = await Shop.findOne({ shopName });
+
+  if (!shop) {
+    return res.status(404).send('Shop not found');
+  }
+
+  // Get today's date and reset time (to handle comparisons easily)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set time to midnight for consistency
+
+  // Ensure visitsHistory exists before accessing
+  if (!shop.visitsHistory) {
+    shop.visitsHistory = []; // Initialize visitsHistory if it's not already there
+  }
+
+  // Find if there is an entry for today in visitsHistory
+  const todayVisit = shop.visitsHistory.find(visit => visit.date.getTime() === today.getTime());
+
+  if (todayVisit) {
+    // If entry for today exists, increment today's visits count
+    todayVisit.visits += 1;
+  } else {
+    // Otherwise, create a new entry for today's visit
+    shop.visitsHistory.push({ date: today, visits: 1 });
+  }
+
+  // Increment the overall visit count
+  shop.visits += 1;
+
+  // Remove entries older than 7 days
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7); // 7 days ago
+  shop.visitsHistory = shop.visitsHistory.filter(visit => visit.date >= sevenDaysAgo);
+
+  // Save the updated shop data
+  await shop.save();
+
+  // Render the shop's page
+  res.render("index", { shopName });
+});
+
+app.get("/:shopname/owner", async (req, res) => {
+  const shopName = req.params.shopname;
+  let shop = await Shop.findOne({ shopName });
+
+  if (!shop) {
+    return res.status(404).send('Shop not found');
+  }
+
+  let shopVisit = shop.visits;
+
+  // Ensure visitsHistory exists before accessing
+  if (!shop.visitsHistory) {
+    shop.visitsHistory = []; // Initialize visitsHistory if it's not already there
+  }
+
+  // Get today's visit count
+  const todayVisit = shop.visitsHistory.find(visit => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return visit.date.getTime() === today.getTime();
+  }) || { visits: 0 }; // Default to 0 if no visit entry exists for today
+
+  // Get the last 7 days of visit history
+  const lastSevenDays = shop.visitsHistory.slice(-7);
+
+  // Render the owner page with the shop data and the last 7 days' visits
+  res.render('owner', { shopName, shopVisit, lastSevenDays, todayVisit: todayVisit.visits });
+});
+
 
 
 app.get('/api/:name/tshirts_images', async (req, res) => {
@@ -103,6 +200,8 @@ app.get('/api/:name/tshirts_images', async (req, res) => {
         res.status(500).render('error', { message: 'Server error' });
     }
 });
+
+
 
 app.get('/api/add-sizes', async (req, res) => {
   try {
@@ -192,8 +291,6 @@ app.get('/colormind/api', async (req, res) => {
   }
 });
 
-app.get('/admin/:adminName', (req,res)=>{
-  res.render('admin')
-})
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

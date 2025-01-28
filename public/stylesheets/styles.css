@@ -607,3 +607,6 @@ input[type="range"]::-moz-range-thumb {
     font-weight: bolder;
     font-size: 25px;
 }
+#admin-btn {
+    margin: 10px; /* Add some margin for spacing */
+}

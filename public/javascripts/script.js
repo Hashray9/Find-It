@@ -7,6 +7,7 @@ const searchBtnUpper = document.getElementById("search-btn-upper");
 const searchBtnJeans = document.getElementById("search-btn-jeans");
 const searchBtnlower = document.getElementById("search-btn-lower");
 const clearButton = document.getElementById("clear-button");
+const adminButton=document.getElementById("admin-btn");
 const color1 = document.getElementById("color1");
 const color2 = document.getElementById("color2");
 const color3 = document.getElementById("color3");
